@@ -1,0 +1,25 @@
+
+============================================================
+USER MESSAGE RETRIEVAL TEST WITH JWT
+============================================================
+
+1. User logging in...
+[OK] User logged in
+  Email: testuser@example.com
+
+2. User sending message...
+[OK] Message sent: 6989aae7dcaace7843b84863
+
+3. Admin sending reply...
+[OK] Reply sent successfully
+
+4. User fetching their messages WITH JWT...
+[OK] User fetched 7 message(s)
+  Subject: Test Subject
+  Status: replied
+  Replies: 1
+
+[SUCCESS] User can see replies!
+  Reply: None
+
+============================================================

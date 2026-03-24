@@ -1,0 +1,173 @@
+.overall-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  min-height: 45vh;
+  font-family: "Arial", sans-serif;
+  box-sizing: border-box;
+  padding: 2rem 2.5rem;
+  background-color: #f0f0f0;
+  overflow-x: hidden;
+}
+
+/* TOP CONTENT */
+.top-content {
+  text-align: center;
+  color: #1b5e20;
+  margin-bottom: 1.5rem;
+}
+
+.top-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.top-content p {
+  font-size: 1.3rem;
+  color: #555;
+}
+
+/* Main Dashboard Flex */
+.dashboard-main {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  min-height: 380px;  /* slightly taller for bigger cards */
+  align-items: flex-start; /* align items to top */
+}
+
+/* Left Panel: Value Cards */
+.values-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 230px; /* increased height for bigger cards */
+  gap: 2rem;
+  flex: 0 0 680px;       /* slightly wider panel */
+  align-items: start;
+  margin-top: 20px;
+}
+
+/* Value Cards */
+.value-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* vertical center */
+  align-items: center;      /* horizontal center */
+  text-align: center;
+  font-size: 1.6rem;        /* slightly smaller font */
+  font-weight: bold;
+  min-width: 310px;          /* slightly wider */
+  max-width: 340px;         
+  padding: 2rem;          
+  color: #000000;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.value-card * {
+  margin: 0.3rem 0;
+}
+
+.value-card h2 {
+  font-size: 2rem;  /* slightly smaller heading */
+}
+
+.value-card p {
+  font-size: 1.3rem;  /* slightly smaller content */
+  line-height: 1.5;
+}
+
+/* Pie Chart Panel */
+.chart-panel {
+  flex: 0 0 600px;   
+  background-color: transparent;
+  padding: 0;          
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 0;
+}
+
+/* Alerts Section */
+.alert-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;  /* move alerts lower */
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.3rem 2rem;
+  border-radius: 12px;
+  font-weight: bold;
+  color: white;
+  flex: 1 1 300px;
+  text-align: center;
+  font-size: 1.35rem;
+  min-height: 65px;
+}
+
+.energy-alert { background-color: #FFA500; }
+.water-alert { background-color: #2196F3; }
+.waste-alert { background-color: #FF5722; }
+.carbon-alert {
+  background-color: #455A64;
+  border: 1px solid #37474F;
+  color: #FFFFFF;
+}
+.green-alert { background-color: #4CAF50; }
+
+.value-card.energy {
+  border-top: 6px solid #FFA500;
+}
+
+.value-card.water {
+  border-top: 6px solid #2196F3;
+}
+
+.value-card.waste {
+  border-top: 6px solid #FF5722;
+}
+
+.value-card.carbon {
+  border-top: 6px solid #607D8B;
+}
+
+.value-card.green-score {
+  border-top: 6px solid #4CAF50;
+}
+
+/* Responsive Layout */
+@media (max-width: 1600px) {
+  .dashboard-main {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .values-panel, .chart-panel {
+    width: 100%;
+  }
+
+  .values-panel {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+    margin-top: 0;
+  }
+
+  .chart-panel {
+    margin-left: 0;
+    align-items: center;
+  }
+}

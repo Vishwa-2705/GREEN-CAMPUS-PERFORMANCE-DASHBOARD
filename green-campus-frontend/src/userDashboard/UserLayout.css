@@ -1,0 +1,30 @@
+.user-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Main content attached to sidebar */
+.user-main-content {
+  margin-left: 400px; /* width of sidebar */
+  flex: 1;
+  padding: 2rem 3rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden; /* prevent horizontal scroll */
+  overflow-y: auto;
+  width: calc(100% - 400px);
+}
+
+@media (max-width: 768px) {
+  .user-layout {
+    flex-direction: column;
+  }
+
+  .user-main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}

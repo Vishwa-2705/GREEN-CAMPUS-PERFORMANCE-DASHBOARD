@@ -1,0 +1,133 @@
+.user-overall-dashboard {
+  padding: 40px;
+}
+
+.top-content {
+  margin-bottom: 30px;
+}
+
+.top-content h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.top-content p {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.values-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .values-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.value-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #95a5a6;
+  transition: transform 0.3s;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.value-card h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.3rem;
+  color: #2c3e50;
+}
+
+.value-card p {
+  margin: 8px 0;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.value-card.energy {
+  border-left-color: #FFA500;
+}
+
+.value-card.water {
+  border-left-color: #2196F3;
+}
+
+.value-card.waste {
+  border-left-color: #FF5722;
+}
+
+.value-card.carbon {
+  border-left-color: #607D8B;
+}
+
+.value-card.green-score {
+  border-left-color: #27ae60;
+}
+
+.chart-panel {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.alert {
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  border-left: 5px solid;
+}
+
+.energy-alert {
+  background-color: #ffe0b2;
+  border-left-color: #FFA500;
+  color: #e65100;
+}
+
+.water-alert {
+  background-color: #b3e5fc;
+  border-left-color: #2196F3;
+  color: #01579b;
+}
+
+.waste-alert {
+  background-color: #ffccbc;
+  border-left-color: #FF5722;
+  color: #bf360c;
+}
+
+.carbon-alert {
+  background-color: #455a64;
+  border-left-color: #37474f;
+  color: #ffffff;
+}

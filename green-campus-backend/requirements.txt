@@ -1,0 +1,6 @@
+Flask==2.3.0
+flask-cors==4.0.0
+pymongo==4.6.0
+python-dotenv==1.0.0
+flask-jwt-extended==4.5.2
+python-emailer==1.5.4
