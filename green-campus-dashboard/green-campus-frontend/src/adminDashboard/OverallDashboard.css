@@ -121,7 +121,32 @@
 .energy-alert { background-color: #FFA500; }
 .water-alert { background-color: #2196F3; }
 .waste-alert { background-color: #FF5722; }
+.carbon-alert {
+  background-color: #455A64;
+  border: 1px solid #37474F;
+  color: #FFFFFF;
+}
 .green-alert { background-color: #4CAF50; }
+
+.value-card.energy {
+  border-top: 6px solid #FFA500;
+}
+
+.value-card.water {
+  border-top: 6px solid #2196F3;
+}
+
+.value-card.waste {
+  border-top: 6px solid #FF5722;
+}
+
+.value-card.carbon {
+  border-top: 6px solid #607D8B;
+}
+
+.value-card.green-score {
+  border-top: 6px solid #4CAF50;
+}
 
 /* Responsive Layout */
 @media (max-width: 1600px) {

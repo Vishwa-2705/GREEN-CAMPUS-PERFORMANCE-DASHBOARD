@@ -4,83 +4,42 @@ import { useDashboard } from "../context/DashboardContext";
 import "./GreenScore.css";
 
 const GreenScore = () => {
-  const { greenScore, energyChange, waterChange, wasteChange } = useDashboard();
+  const { greenScore, energyChange, waterChange, wasteChange, carbonChange } = useDashboard();
 
-  // Sample historical data for trend visualization
   const monthlyData = [
-    { month: "January", energy: 88, water: 75, waste: 80, overall: 81 },
-    { month: "February", energy: 85, water: 78, waste: 82, overall: 82 },
-    { month: "March", energy: 92, water: 85, waste: 88, overall: 88 },
-    { month: "April", energy: 94, water: 88, waste: 90, overall: 91 },
-    { month: "May", energy: 89, water: 80, waste: 85, overall: 85 },
-    { month: "June", energy: 96, water: 92, waste: 95, overall: 94 },
+    { month: "January", energy: 88, water: 75, waste: 80, carbon: 77, overall: 80 },
+    { month: "February", energy: 85, water: 78, waste: 82, carbon: 79, overall: 81 },
+    { month: "March", energy: 92, water: 85, waste: 88, carbon: 84, overall: 87 },
+    { month: "April", energy: 94, water: 88, waste: 90, carbon: 86, overall: 90 },
+    { month: "May", energy: 89, water: 80, waste: 85, carbon: 82, overall: 84 },
+    { month: "June", energy: 96, water: 92, waste: 95, carbon: 90, overall: 93 },
   ];
 
-  // Generate alerts based on current changes
-  const getAlerts = () => {
-    const alerts = [];
-    
-    if (energyChange > 0) {
-      alerts.push({
-        type: "warning",
-        message: `⚠️ Energy consumption increased by ${energyChange}%!`,
-        category: "energy"
-      });
-    } else {
-      alerts.push({
-        type: "success",
-        message: `✅ Energy consumption decreased by ${Math.abs(energyChange)}%! Good work!`,
-        category: "energy"
-      });
-    }
-
-    if (waterChange > 0) {
-      alerts.push({
-        type: "warning",
-        message: `⚠️ Water consumption increased by ${waterChange}%!`,
-        category: "water"
-      });
-    } else {
-      alerts.push({
-        type: "success",
-        message: `✅ Water consumption decreased by ${Math.abs(waterChange)}%! Excellent!`,
-        category: "water"
-      });
-    }
-
-    if (wasteChange > 0) {
-      alerts.push({
-        type: "warning",
-        message: `⚠️ Waste generation increased by ${wasteChange}%!`,
-        category: "waste"
-      });
-    } else {
-      alerts.push({
-        type: "success",
-        message: `✅ Waste generation decreased by ${Math.abs(wasteChange)}%! Great effort!`,
-        category: "waste"
-      });
-    }
-
-    return alerts;
-  };
-
-  const alerts = getAlerts();
-  
-  const scoreData = [
-    { metric: "Energy", current: energyChange },
-    { metric: "Water", current: waterChange },
-    { metric: "Waste", current: wasteChange },
+  const metrics = [
+    { label: "Energy", change: energyChange, positiveText: "Energy consumption increased", negativeText: "Energy consumption decreased", category: "energy" },
+    { label: "Water", change: waterChange, positiveText: "Water consumption increased", negativeText: "Water consumption decreased", category: "water" },
+    { label: "Waste", change: wasteChange, positiveText: "Waste generation increased", negativeText: "Waste generation decreased", category: "waste" },
+    { label: "Carbon", change: carbonChange, positiveText: "Carbon emissions increased", negativeText: "Carbon emissions decreased", category: "carbon" },
   ];
+
+  const alerts = metrics.map((metric) => ({
+    type: metric.change > 0 ? "warning" : "success",
+    message: `${metric.change > 0 ? metric.positiveText : metric.negativeText} by ${Math.abs(metric.change)}%!`,
+    category: metric.category,
+  }));
+
+  const scoreData = metrics.map((metric) => ({
+    metric: metric.label,
+    current: Number(metric.change),
+  }));
 
   return (
     <div className="greenscore-dashboard">
       <div className="greenscore-header">
-        <h1>🌿 Green Score Analytics</h1>
+        <h1>Green Score Analytics</h1>
         <p>Comprehensive sustainability performance analysis</p>
       </div>
 
-      {/* Overall Score Card */}
       <div className="overall-score-container">
         <div className="score-card main-score">
           <h2>Overall Green Score</h2>
@@ -95,33 +54,17 @@ const GreenScore = () => {
           </p>
         </div>
 
-        {/* Individual Scores */}
-        <div className="score-card energy-score">
-          <h3>Energy Change</h3>
-          <p className="metric-value">{energyChange}%</p>
-          <p className={`metric-change ${energyChange > 0 ? "increase" : "decrease"}`}>
-            {energyChange > 0 ? "↑" : "↓"} {Math.abs(energyChange)}%
-          </p>
-        </div>
-
-        <div className="score-card water-score">
-          <h3>Water Change</h3>
-          <p className="metric-value">{waterChange}%</p>
-          <p className={`metric-change ${waterChange > 0 ? "increase" : "decrease"}`}>
-            {waterChange > 0 ? "↑" : "↓"} {Math.abs(waterChange)}%
-          </p>
-        </div>
-
-        <div className="score-card waste-score">
-          <h3>Waste Change</h3>
-          <p className="metric-value">{wasteChange}%</p>
-          <p className={`metric-change ${wasteChange > 0 ? "increase" : "decrease"}`}>
-            {wasteChange > 0 ? "↑" : "↓"} {Math.abs(wasteChange)}%
-          </p>
-        </div>
+        {metrics.map((metric) => (
+          <div key={metric.label} className={`score-card ${metric.category}-score`}>
+            <h3>{metric.label} Change</h3>
+            <p className="metric-value">{metric.change}%</p>
+            <p className={`metric-change ${metric.change > 0 ? "increase" : "decrease"}`}>
+              {metric.change > 0 ? "Up" : "Down"} {Math.abs(metric.change)}%
+            </p>
+          </div>
+        ))}
       </div>
 
-      {/* Comparison Chart */}
       <div className="chart-container">
         <h2>Consumption Change Comparison</h2>
         <ResponsiveContainer width="100%" height={350}>
@@ -136,7 +79,6 @@ const GreenScore = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Trend Chart */}
       <div className="chart-container">
         <h2>Score Trend Over Months</h2>
         <ResponsiveContainer width="100%" height={350}>
@@ -149,12 +91,12 @@ const GreenScore = () => {
             <Line type="monotone" dataKey="energy" stroke="#FFA500" strokeWidth={2} name="Energy" />
             <Line type="monotone" dataKey="water" stroke="#2196F3" strokeWidth={2} name="Water" />
             <Line type="monotone" dataKey="waste" stroke="#FF5722" strokeWidth={2} name="Waste" />
+            <Line type="monotone" dataKey="carbon" stroke="#607D8B" strokeWidth={2} name="Carbon" />
             <Line type="monotone" dataKey="overall" stroke="#27ae60" strokeWidth={3} name="Overall" />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Alerts */}
       <div className="alerts-container">
         <h2>Performance Alerts</h2>
         <div className="alerts-grid">
@@ -166,7 +108,6 @@ const GreenScore = () => {
         </div>
       </div>
 
-      {/* Summary */}
       <div className="summary-container">
         <h2>Score Summary</h2>
         <div className="summary-content">
@@ -177,12 +118,12 @@ const GreenScore = () => {
             <strong>Score Status:</strong> {greenScore >= 70 ? "Excellent" : greenScore >= 50 ? "Good" : "Needs Improvement"}
           </p>
           <p>
-            Energy Change: {energyChange > 0 ? "+" : ""}{energyChange}% | Water Change: {waterChange > 0 ? "+" : ""}{waterChange}% | Waste Change: {wasteChange > 0 ? "+" : ""}{wasteChange}%
+            Energy Change: {energyChange > 0 ? "+" : ""}{energyChange}% | Water Change: {waterChange > 0 ? "+" : ""}{waterChange}% | Waste Change: {wasteChange > 0 ? "+" : ""}{wasteChange}% | Carbon Change: {carbonChange > 0 ? "+" : ""}{carbonChange}%
           </p>
-          <p className={greenScore >= 50 ? "increase" : "decrease"}>
-            {greenScore >= 50 
-              ? "✅ Score is maintainable. Keep working towards sustainability goals!"
-              : "⚠️ Focus on reducing consumption to improve your green score."}
+          <p className={greenScore >= 50 ? "decrease" : "increase"}>
+            {greenScore >= 50
+              ? "Score is maintainable. Keep working towards sustainability goals."
+              : "Focus on reducing consumption to improve your green score."}
           </p>
         </div>
       </div>

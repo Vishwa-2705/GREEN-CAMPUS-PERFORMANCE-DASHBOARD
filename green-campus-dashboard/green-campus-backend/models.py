@@ -53,11 +53,11 @@ def save_json_file(filepath, data):
 
 
 class Dashboard:
-    """Store dashboard datasets (energy, water, waste)"""
+    """Store dashboard datasets (energy, water, waste, carbon)"""
 
     @staticmethod
     def get_dashboard():
-        """Return a dashboard dict with energyData, waterData, wasteData"""
+        """Return a dashboard dict with energyData, waterData, wasteData, carbonData"""
         if USE_MONGODB:
             coll = db['dashboard']
             doc = coll.find_one({})

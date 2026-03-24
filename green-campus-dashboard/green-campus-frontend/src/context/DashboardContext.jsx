@@ -28,19 +28,37 @@ export const DashboardProvider = ({ children }) => {
     { week: "Week 4", current: 90, previous: 85 },
   ]);
 
+  // Carbon data
+  const [carbonData, setCarbonData] = useState([
+    { week: "Week 1", current: 52, previous: 58 },
+    { week: "Week 2", current: 49, previous: 54 },
+    { week: "Week 3", current: 47, previous: 51 },
+    { week: "Week 4", current: 55, previous: 60 },
+  ]);
+
   // Calculate totals
   const energyTotal = energyData.reduce((sum, item) => sum + item.current, 0);
   const waterTotal = waterData.reduce((sum, item) => sum + item.current, 0);
   const wasteTotal = wasteData.reduce((sum, item) => sum + item.current, 0);
+  const carbonTotal = carbonData.reduce((sum, item) => sum + item.current, 0);
 
   const energyPreviousTotal = energyData.reduce((sum, item) => sum + item.previous, 0);
   const waterPreviousTotal = waterData.reduce((sum, item) => sum + item.previous, 0);
   const wastePreviousTotal = wasteData.reduce((sum, item) => sum + item.previous, 0);
+  const carbonPreviousTotal = carbonData.reduce((sum, item) => sum + item.previous, 0);
+
+  const calculateChange = (currentTotal, previousTotal) => {
+    if (previousTotal === 0) {
+      return currentTotal === 0 ? "0.00" : "100.00";
+    }
+    return (((currentTotal - previousTotal) / previousTotal) * 100).toFixed(2);
+  };
 
   // Calculate percentage changes
-  const energyChange = ((energyTotal - energyPreviousTotal) / energyPreviousTotal * 100).toFixed(2);
-  const waterChange = ((waterTotal - waterPreviousTotal) / waterPreviousTotal * 100).toFixed(2);
-  const wasteChange = ((wasteTotal - wastePreviousTotal) / wastePreviousTotal * 100).toFixed(2);
+  const energyChange = calculateChange(energyTotal, energyPreviousTotal);
+  const waterChange = calculateChange(waterTotal, waterPreviousTotal);
+  const wasteChange = calculateChange(wasteTotal, wastePreviousTotal);
+  const carbonChange = calculateChange(carbonTotal, carbonPreviousTotal);
 
   // Green Score calculation (0-100 scale, lower is better for consumption)
   // Average of inverse scores (so lower consumption = higher score)
@@ -48,7 +66,8 @@ export const DashboardProvider = ({ children }) => {
     const energyScore = Math.max(0, 100 - (energyTotal - energyPreviousTotal));
     const waterScore = Math.max(0, 100 - (waterTotal - waterPreviousTotal));
     const wasteScore = Math.max(0, 100 - (wasteTotal - wastePreviousTotal));
-    const avgScore = Math.round((energyScore + waterScore + wasteScore) / 3);
+    const carbonScore = Math.max(0, 100 - (carbonTotal - carbonPreviousTotal));
+    const avgScore = Math.round((energyScore + waterScore + wasteScore + carbonScore) / 4);
     return Math.min(100, Math.max(0, avgScore));
   };
 
@@ -76,6 +95,13 @@ export const DashboardProvider = ({ children }) => {
     wastePreviousTotal,
     wasteChange,
 
+    // Carbon
+    carbonData,
+    setCarbonData,
+    carbonTotal,
+    carbonPreviousTotal,
+    carbonChange,
+
     // Overall
     greenScore,
   };
@@ -90,6 +116,7 @@ export const DashboardProvider = ({ children }) => {
         if (Array.isArray(data.energyData) && data.energyData.length) setEnergyData(data.energyData);
         if (Array.isArray(data.waterData) && data.waterData.length) setWaterData(data.waterData);
         if (Array.isArray(data.wasteData) && data.wasteData.length) setWasteData(data.wasteData);
+        if (Array.isArray(data.carbonData) && data.carbonData.length) setCarbonData(data.carbonData);
       }
     };
     load();
@@ -111,7 +138,7 @@ export const DashboardProvider = ({ children }) => {
         if (!userInfo) return;
         const user = JSON.parse(userInfo);
         if (user.role && user.role.toLowerCase() === 'admin') {
-          await apiService.updateDashboard({ energyData, waterData, wasteData });
+          await apiService.updateDashboard({ energyData, waterData, wasteData, carbonData });
         }
       } catch (e) {
         console.error('Error persisting dashboard:', e);
@@ -120,7 +147,7 @@ export const DashboardProvider = ({ children }) => {
 
     persist();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [energyData, waterData, wasteData]);
+  }, [energyData, waterData, wasteData, carbonData]);
 
   return (
     <DashboardContext.Provider value={value}>

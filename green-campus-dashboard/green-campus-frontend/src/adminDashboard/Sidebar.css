@@ -14,6 +14,7 @@
   overflow-y: auto;
   box-sizing: border-box;
   z-index: 1000;
+  padding-bottom: 1rem;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -110,6 +111,10 @@
   transition: all 0.3s ease;
   font-size: 1.3rem;
   margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  box-shadow: 0 -6px 20px rgba(26, 162, 96, 0.2);
 }
 
 .logout-btn:hover {

@@ -137,7 +137,7 @@ def send_message():
 
 @app.route('/api/dashboard', methods=['GET'])
 def get_dashboard():
-    """Return dashboard data (energy, water, waste). Public endpoint."""
+    """Return dashboard data (energy, water, waste, carbon). Public endpoint."""
     try:
         data = Dashboard.get_dashboard()
         if not data:
@@ -160,6 +160,12 @@ def get_dashboard():
                     { 'week': 'Week 2', 'current': 85, 'previous': 80 },
                     { 'week': 'Week 3', 'current': 78, 'previous': 72 },
                     { 'week': 'Week 4', 'current': 90, 'previous': 85 },
+                ],
+                'carbonData': [
+                    { 'week': 'Week 1', 'current': 52, 'previous': 58 },
+                    { 'week': 'Week 2', 'current': 49, 'previous': 54 },
+                    { 'week': 'Week 3', 'current': 47, 'previous': 51 },
+                    { 'week': 'Week 4', 'current': 55, 'previous': 60 },
                 ]
             }
         return jsonify({'dashboard': data}), 200
@@ -186,7 +192,8 @@ def update_dashboard():
         dashboard = {
             'energyData': data.get('energyData', []),
             'waterData': data.get('waterData', []),
-            'wasteData': data.get('wasteData', [])
+            'wasteData': data.get('wasteData', []),
+            'carbonData': data.get('carbonData', [])
         }
 
         Dashboard.save_dashboard(dashboard)

@@ -80,6 +80,10 @@
   border-left-color: #FF5722;
 }
 
+.value-card.carbon {
+  border-left-color: #607D8B;
+}
+
 .value-card.green-score {
   border-left-color: #27ae60;
 }
@@ -120,4 +124,10 @@
   background-color: #ffccbc;
   border-left-color: #FF5722;
   color: #bf360c;
+}
+
+.carbon-alert {
+  background-color: #455a64;
+  border-left-color: #37474f;
+  color: #ffffff;
 }

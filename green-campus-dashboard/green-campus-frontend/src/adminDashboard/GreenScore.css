@@ -145,6 +145,14 @@
   color: #FF5722;
 }
 
+.score-card.carbon-score {
+  border-left-color: #607D8B;
+}
+
+.score-card.carbon-score .metric-value {
+  color: #607D8B;
+}
+
 .chart-container {
   background: white;
   padding: 30px;
