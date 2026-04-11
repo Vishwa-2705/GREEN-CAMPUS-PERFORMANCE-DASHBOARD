@@ -11,7 +11,10 @@ import json
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[
+    'http://localhost:5173',
+    'https://green-campus-performance-dashboard-1.onrender.com'
+])
 
 # Configuration
 app.config['JWT_SECRET_KEY'] = Config.JWT_SECRET_KEY

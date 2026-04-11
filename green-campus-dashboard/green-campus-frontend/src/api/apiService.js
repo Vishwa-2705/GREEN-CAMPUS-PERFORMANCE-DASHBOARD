@@ -1,9 +1,9 @@
-const API_BASE_URL = 'https://green-campus-performance-dashboard.onrender.com';
+const API_BASE_URL = 'https://green-campus-performance-dashboard.onrender.com/api';
 
 // Store token in localStorage
 export const setAuthToken = (token) => {
   if (token) {
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('authToken', token)
   } else {
     localStorage.removeItem('authToken');
   }
