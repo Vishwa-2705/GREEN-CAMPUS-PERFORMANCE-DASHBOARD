@@ -8,8 +8,10 @@ from functools import wraps
 import os
 import json
 
+
+
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'])
+CORS(app)
 
 # Configuration
 app.config['JWT_SECRET_KEY'] = Config.JWT_SECRET_KEY
