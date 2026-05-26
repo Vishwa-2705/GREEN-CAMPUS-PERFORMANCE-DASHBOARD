@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from config import Config
-from models import User, Message, Dashboard
+from models import User, Message, Dashboard, HistoricalData
 from email_utils import send_admin_reply_email
 from functools import wraps
 import os
@@ -344,6 +344,214 @@ def test_jwt():
         }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+# ==================== Historical Data Routes ====================
+
+@app.route('/api/data/daily', methods=['POST'])
+@jwt_required()
+def save_daily_data():
+    """
+    Save daily aggregated data
+    Required fields: date (YYYY-MM-DD), energy, water, waste, carbon
+    Optional: notes
+    """
+    try:
+        data = request.json
+        
+        if not data or not data.get('date'):
+            return jsonify({'message': 'Date and data required'}), 400
+        
+        result = HistoricalData.save_daily_data({
+            'date': data.get('date'),
+            'energy': data.get('energy', 0),
+            'water': data.get('water', 0),
+            'waste': data.get('waste', 0),
+            'carbon': data.get('carbon', 0),
+            'notes': data.get('notes', '')
+        })
+        
+        return jsonify({
+            'message': 'Daily data saved successfully',
+            'success': result
+        }), 201 if result else 500
+    except Exception as e:
+        print(f"[ERROR] Saving daily data: {e}")
+        return jsonify({'message': f'Error saving daily data: {str(e)}'}), 500
+
+
+@app.route('/api/data/daily', methods=['GET'])
+def get_daily_data():
+    """
+    Retrieve daily data with optional date range filtering
+    Query params: start_date (YYYY-MM-DD), end_date (YYYY-MM-DD)
+    """
+    try:
+        start_date = request.args.get('start_date')
+        end_date = request.args.get('end_date')
+        
+        data = HistoricalData.get_daily_data(start_date=start_date, end_date=end_date)
+        
+        return jsonify({
+            'data': data,
+            'count': len(data)
+        }), 200
+    except Exception as e:
+        print(f"[ERROR] Retrieving daily data: {e}")
+        return jsonify({'message': f'Error retrieving daily data: {str(e)}'}), 500
+
+
+@app.route('/api/data/weekly', methods=['POST'])
+@jwt_required()
+def save_weekly_data():
+    """
+    Save weekly aggregated data
+    Required fields: week, year, week_number, energy, energy_previous, water, water_previous, waste, waste_previous, carbon, carbon_previous
+    Optional: notes
+    """
+    try:
+        data = request.json
+        
+        if not data or not all(k in data for k in ['week', 'year', 'week_number']):
+            return jsonify({'message': 'Week, year, week_number and data required'}), 400
+        
+        result = HistoricalData.save_weekly_data({
+            'week': data.get('week'),
+            'year': data.get('year'),
+            'week_number': data.get('week_number'),
+            'energy': data.get('energy', 0),
+            'energy_previous': data.get('energy_previous', 0),
+            'water': data.get('water', 0),
+            'water_previous': data.get('water_previous', 0),
+            'waste': data.get('waste', 0),
+            'waste_previous': data.get('waste_previous', 0),
+            'carbon': data.get('carbon', 0),
+            'carbon_previous': data.get('carbon_previous', 0),
+            'notes': data.get('notes', '')
+        })
+        
+        return jsonify({
+            'message': 'Weekly data saved successfully',
+            'success': result
+        }), 201 if result else 500
+    except Exception as e:
+        print(f"[ERROR] Saving weekly data: {e}")
+        return jsonify({'message': f'Error saving weekly data: {str(e)}'}), 500
+
+
+@app.route('/api/data/weekly', methods=['GET'])
+def get_weekly_data():
+    """
+    Retrieve weekly data for specified year (default: current year)
+    Query params: year (optional)
+    """
+    try:
+        year = request.args.get('year', type=int)
+        data = HistoricalData.get_weekly_data(year=year)
+        
+        return jsonify({
+            'data': data,
+            'count': len(data),
+            'year': year
+        }), 200
+    except Exception as e:
+        print(f"[ERROR] Retrieving weekly data: {e}")
+        return jsonify({'message': f'Error retrieving weekly data: {str(e)}'}), 500
+
+
+@app.route('/api/data/monthly', methods=['POST'])
+@jwt_required()
+def save_monthly_data():
+    """
+    Save monthly aggregated data
+    Required fields: month, year, month_number, energy, water, waste, carbon
+    Optional: notes
+    """
+    try:
+        data = request.json
+        
+        if not data or not all(k in data for k in ['month', 'year', 'month_number']):
+            return jsonify({'message': 'Month, year, month_number and data required'}), 400
+        
+        result = HistoricalData.save_monthly_data({
+            'month': data.get('month'),
+            'year': data.get('year'),
+            'month_number': data.get('month_number'),
+            'energy': data.get('energy', 0),
+            'water': data.get('water', 0),
+            'waste': data.get('waste', 0),
+            'carbon': data.get('carbon', 0),
+            'notes': data.get('notes', '')
+        })
+        
+        return jsonify({
+            'message': 'Monthly data saved successfully',
+            'success': result
+        }), 201 if result else 500
+    except Exception as e:
+        print(f"[ERROR] Saving monthly data: {e}")
+        return jsonify({'message': f'Error saving monthly data: {str(e)}'}), 500
+
+
+@app.route('/api/data/monthly', methods=['GET'])
+def get_monthly_data():
+    """
+    Retrieve monthly data for specified year (default: current year)
+    Query params: year (optional)
+    """
+    try:
+        year = request.args.get('year', type=int)
+        data = HistoricalData.get_monthly_data(year=year)
+        
+        return jsonify({
+            'data': data,
+            'count': len(data),
+            'year': year
+        }), 200
+    except Exception as e:
+        print(f"[ERROR] Retrieving monthly data: {e}")
+        return jsonify({'message': f'Error retrieving monthly data: {str(e)}'}), 500
+
+
+@app.route('/api/data/summary', methods=['GET'])
+def get_data_summary():
+    """
+    Get summary statistics across all stored data
+    Returns: total records, totals, and averages for each metric
+    """
+    try:
+        stats = HistoricalData.get_summary_stats()
+        return jsonify(stats), 200
+    except Exception as e:
+        print(f"[ERROR] Retrieving summary stats: {e}")
+        return jsonify({'message': f'Error retrieving summary: {str(e)}'}), 500
+
+
+@app.route('/api/data/cleanup', methods=['DELETE'])
+@jwt_required()
+def cleanup_old_data():
+    """
+    Delete daily records older than specified days (admin only)
+    Query params: days (default: 90)
+    Note: Monthly aggregates are preserved for historical reference
+    """
+    try:
+        identity_str = get_jwt_identity()
+        identity = json.loads(identity_str)
+        
+        if identity.get('role') != 'admin':
+            return jsonify({'message': 'Unauthorized - Admin only'}), 403
+        
+        days = request.args.get('days', 90, type=int)
+        deleted_count = HistoricalData.delete_old_data(days=days)
+        
+        return jsonify({
+            'message': f'Deleted {deleted_count} records older than {days} days',
+            'deleted_count': deleted_count
+        }), 200
+    except Exception as e:
+        print(f"[ERROR] Cleanup old data: {e}")
+        return jsonify({'message': f'Error cleaning up data: {str(e)}'}), 500
 
 
 # ==================== Error Handlers ====================
