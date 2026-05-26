@@ -135,7 +135,9 @@
 
 table {
   width: 100%;
+  min-width: 700px;
   border-collapse: collapse;
+  color: #2c3e50 !important;
 }
 
 table th {
@@ -147,8 +149,10 @@ table th {
 }
 
 table td {
-  padding: 15px;
-  border-bottom: 1px solid #ecf0f1;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  color: #2c3e50 !important;
+  font-weight: 500;
 }
 
 table tr:hover {
